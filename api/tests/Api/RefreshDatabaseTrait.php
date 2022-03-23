@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Tests\Api;
 
-use InvalidArgumentException;
 use Doctrine\ORM\Tools\SchemaTool;
 use Doctrine\ORM\Tools\ToolsException;
 use Hautelook\AliceBundle\PhpUnit\RefreshDatabaseTrait as HautelookRefreshDatabaseTrait;
+use InvalidArgumentException;
 
 /**
  * Create the schema if necessary, then populate the DB.

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Repository\TopBook;
 
-use RuntimeException;
 use App\Entity\TopBook;
+use RuntimeException;
 
 final class TopBookDataRepository implements TopBookDataInterface
 {

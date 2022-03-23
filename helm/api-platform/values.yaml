@@ -19,10 +19,6 @@ php:
     - "172.16.0.0/12"
     - "192.168.0.0/16"
   host: "chart-example.local"
-  jwt:
-    secretKey: ""
-    publicKey: ""
-    passphrase: ""
 
 pwa:
   image:
@@ -48,25 +44,69 @@ mercure:
 # Full configuration: https://github.com/bitnami/charts/tree/master/bitnami/postgresql
 postgresql:
   enabled: true
-  # If bringing your own PostgreSQL, the full uri to use
-  url: postgresql://api-platform:!ChangeMe!@database:5432/api?serverVersion=13&charset=utf8
-  postgresqlUsername: "example"
-  postgresqlPassword: "!ChangeMe!"
-  postgresqlDatabase: "api"
+  global:
+    postgresql:
+      auth:
+        username: "example"
+        password: "!ChangeMe!"
+        database: "api"
   # Persistent Volume Storage configuration.
   # ref: https://kubernetes.io/docs/user-guide/persistent-volumes
-  persistence:
-    enabled: true
-    storageClass: standard
-    size: 1Gi
-  pullPolicy: IfNotPresent
+  primary:
+    persistence:
+      enabled: true
+      storageClass: standard
+      size: 1Gi
+    resources:
+      requests:
+        memory: 50Mi
+        cpu: 1m
   image:
     repository: bitnami/postgresql
     tag: 14
+    pullPolicy: IfNotPresent
   resources:
     requests:
       memory: 50Mi
       cpu: 1m
+
+# Full configuration: https://github.com/bitnami/charts/tree/master/bitnami/keycloak
+keycloak:
+  enabled: true
+  image:
+    tag: 18-debian-11
+  service:
+    type: NodePort
+  extraEnvVars:
+    - name: KEYCLOAK_PRODUCTION
+      value: "true"
+    - name: KEYCLOAK_EXTRA_ARGS
+      value: "--auto-build"
+  proxy: edge
+  ingress:
+    enabled: true
+    hostname: "keycloak.local"
+    annotations:
+      # When using GCE Ingress with managed certificates with Cloudflare, Cloudflare must not use proxy mode
+      external-dns.alpha.kubernetes.io/cloudflare-proxied: "false"
+      networking.gke.io/managed-certificates: "{{ .Release.Name }}-keycloak-managed-cert"
+    path: /*
+    tls: true
+  keycloakConfigCli:
+    enabled: true
+    existingConfigmap: "keycloak-realm"
+  postgresql:
+    enabled: true
+    nameOverride: postgresql-keycloak
+    primary:
+      resources:
+        requests:
+          memory: 50Mi
+          cpu: 1m
+  auth:
+    createAdminUser: true
+    adminUser: admin
+    adminPassword: "!ChangeMe!"
 
 external-dns:
   enabled: true

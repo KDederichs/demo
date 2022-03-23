@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Filter;
 
-use InvalidArgumentException;
 use ApiPlatform\Doctrine\Orm\Filter\FilterInterface;
 use ApiPlatform\Doctrine\Orm\Util\QueryNameGeneratorInterface;
 use ApiPlatform\Metadata\Operation;
 use App\Entity\ArchivableInterface;
 use Doctrine\ORM\QueryBuilder;
+use InvalidArgumentException;
 
 final class ArchivedFilter implements FilterInterface
 {

@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace App\Repository\TopBook;
 
-use InvalidArgumentException;
 use App\Entity\TopBook;
+use InvalidArgumentException;
+use Symfony\Component\DependencyInjection\Attribute\AsDecorator;
 use Symfony\Contracts\Cache\CacheInterface;
 
+#[AsDecorator(decorates: TopBookDataRepository::class)]
 final class TopBookCachedDataRepository implements TopBookDataInterface
 {
     public function __construct(

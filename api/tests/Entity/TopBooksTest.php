@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Tests\Entity;
 
-use TypeError;
 use App\Entity\TopBook;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use TypeError;
 
 class TopBooksTest extends KernelTestCase
 {

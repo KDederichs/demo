@@ -22,10 +22,6 @@ api_platform:
         jsonapi: ['application/vnd.api+json']
     swagger:
         versions: [3]
-        api_keys:
-            apiKey:
-                name: Authorization
-                type: header
     # Mercure integration, remove if unwanted
     mercure: ~
     # Good cache defaults for REST APIs
@@ -33,3 +29,11 @@ api_platform:
         stateless: true
         cache_headers:
             vary: ['Content-Type', 'Authorization', 'Origin']
+    oauth:
+        enabled: true
+        clientId: '%env(OIDC_SWAGGER_CLIENT_ID)%'
+        pkce: true
+        type: oauth2
+        flow: authorizationCode
+        tokenUrl: '%env(OIDC_SERVER_URL)%protocol/openid-connect/token'
+        authorizationUrl: '%env(OIDC_SERVER_URL)%protocol/openid-connect/auth'

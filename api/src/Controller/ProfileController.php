@@ -5,14 +5,16 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Security;
 
+#[AsController]
 final class ProfileController extends AbstractController
 {
     #[Route(path: '/profile')]
-    public function __invoke(Security $security): Response
+    public function __infoke(Security $security): Response
     {
         return $this->json($security->getUser());
     }

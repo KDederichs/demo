@@ -1,0 +1,13 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    Lcobucci\JWT\Configuration:
+        factory: [ App\Security\ConfigurationFactory, createFromFile ]
+        arguments:
+            $path: '%kernel.project_dir%/docker/keycloak/keycloak.crt'
+            $algorithm: '%env(OIDC_ALGORITHM)%'
+
+    App\Security\AccessTokenHandler:
+        decorates: App\Security\KeycloakAccessTokenHandler

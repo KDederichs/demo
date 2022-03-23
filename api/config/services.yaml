@@ -21,16 +21,9 @@ services:
         exclude:
             - '../src/DependencyInjection/'
             - '../src/Entity/'
+            - '../src/Security/AccessTokenHandler.php'
             - '../src/Kernel.php'
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
-
-    # Custom data provider 
-    App\Repository\TopBook\TopBookCachedDataRepository:
-        decorates: App\Repository\TopBook\TopBookDataRepository
-
     App\Repository\TopBook\TopBookDataInterface: '@App\Repository\TopBook\TopBookDataRepository'
-
-    App\OpenApi\OpenApiFactory:
-        decorates: api_platform.openapi.factory

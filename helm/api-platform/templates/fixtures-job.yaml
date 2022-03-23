@@ -30,28 +30,15 @@ spec:
           image: "{{ .Values.php.image.repository }}:{{ .Values.php.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.php.image.pullPolicy }}
           command: ['/bin/sh', '-c']
-          args: ['composer install --prefer-dist --no-progress --no-suggest --no-interaction && bin/console hautelook:fixtures:load --no-interaction']
+          args: ['composer install --prefer-dist --no-progress --no-suggest --no-interaction && bin/console hautelook:fixtures:load --no-interaction --no-bundles']
           env:
             - name: API_ENTRYPOINT_HOST
               valueFrom:
                 configMapKeyRef:
                   name: {{ include "api-platform.fullname" . }}
                   key: php-host
-            - name: JWT_PASSPHRASE
-              valueFrom:
-                secretKeyRef:
-                  name: {{ include "api-platform.fullname" . }}
-                  key: php-jwt-passphrase
-            - name: JWT_PUBLIC_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: {{ include "api-platform.fullname" . }}
-                  key: php-jwt-public-key
-            - name: JWT_SECRET_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: {{ include "api-platform.fullname" . }}
-                  key: php-jwt-secret-key
+            - name: OIDC_SERVER_URL
+              value: https://{{ .Values.keycloak.ingress.hostname }}/realms/demo/
             - name: TRUSTED_HOSTS
               valueFrom:
                 configMapKeyRef:

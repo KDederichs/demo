@@ -44,6 +44,7 @@ jobs:
       gke-project: ${{ secrets.GKE_PROJECT }}
       cloudflare-api-token: ${{ secrets.CF_API_TOKEN }}
       cloudflare-zone-id: ${{ secrets.CF_ZONE_ID }}
+      keycloak-admin-password: ${{ secrets.KEYCLOAK_ADMIN_PASSWORD }}
 
   feature-deploy:
     name: Feature Deploy
@@ -64,3 +65,4 @@ jobs:
       gke-project: ${{ secrets.GKE_PROJECT }}
       cloudflare-api-token: ${{ secrets.CF_API_TOKEN }}
       cloudflare-zone-id: ${{ secrets.CF_ZONE_ID }}
+      keycloak-admin-password: ${{ secrets.KEYCLOAK_ADMIN_PASSWORD }}

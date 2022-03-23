@@ -22,6 +22,14 @@ framework:
     php_errors:
         log: true
 
+    http_client:
+        scoped_clients:
+            oidc.client:
+                base_uri: '%env(OIDC_SERVER_URL)%'
+                # Local usage only, certs provided by Keycloak are self-signed
+                verify_peer: false
+                verify_host: false
+
 when@test:
     framework:
         test: true

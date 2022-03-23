@@ -1,4 +1,5 @@
 /docker/db/data
+/docker/keycloak/keycloak.crt
 
 ###> symfony/framework-bundle ###
 /.env.local
@@ -19,7 +20,3 @@
 .phpunit.result.cache
 /phpunit.xml
 ###< symfony/phpunit-bridge ###
-
-###> lexik/jwt-authentication-bundle ###
-/config/jwt/*.pem
-###< lexik/jwt-authentication-bundle ###
