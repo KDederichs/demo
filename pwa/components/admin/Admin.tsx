@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { SetStateAction, useContext, useState} from "react";
+import React, { SetStateAction, useContext, useState} from "react";
 import {Navigate, Route} from "react-router-dom";
 import {
   CustomRoutes,
@@ -17,7 +17,7 @@ import {
   fetchHydra as baseFetchHydra,
   HydraAdmin,
   hydraDataProvider as baseHydraDataProvider,
-  OpenApiAdmin,
+  OpenApiAdmin, ResourceGuesser,
   useIntrospection,
 } from "@api-platform/admin";
 import {parseHydraDocumentation} from "@api-platform/api-doc-parser";
@@ -26,6 +26,7 @@ import {LoginForm} from "./LoginForm";
 import DocContext from "./DocContext";
 import authProvider from "../../utils/authProvider";
 import {ENTRYPOINT} from "../../config/entrypoint";
+import ReviewEdit from "./ReviewEdit";
 
 const getHeaders = () => localStorage.getItem("token") ? {
   Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -115,6 +116,9 @@ const AdminUI = () => {
       i18nProvider={i18nProvider}
       layout={MyLayout}
       loginPage={LoginPage}>
+      <ResourceGuesser name="books"/>
+      <ResourceGuesser name="reviews" edit={ReviewEdit}/>
+      <ResourceGuesser name="top_books"/>
       <CustomRoutes>
         {redirectToLogin ? <Route path="/" element={<RedirectToLogin />} /> : null}
       </CustomRoutes>

@@ -13,6 +13,8 @@ use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\Link;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\ManyToOne;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -80,10 +82,9 @@ class Review
      * The item that is being reviewed/rated.
      */
     #[ORM\ManyToOne(targetEntity: Book::class, inversedBy: 'reviews')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     #[ApiFilter(SearchFilter::class)]
     #[ApiProperty(types: ['https://schema.org/itemReviewed'])]
-    #[Assert\NotNull]
     #[Groups(groups: ['review:read', 'review:write'])]
     private ?Book $book = null;
 
@@ -101,6 +102,11 @@ class Review
     #[ORM\Column(type: 'datetime', nullable: true)]
     #[Groups(groups: ['review:read', 'review:write'])]
     public ?DateTimeInterface $publicationDate = null;
+
+    #[ManyToOne(targetEntity: self::class)]
+    #[JoinColumn(name: 'self_ref_id', referencedColumnName: 'id', nullable: true)]
+    #[Groups(groups: ['review:read', 'review:write'])]
+    public ?Review $selfRef = null;
 
     public function getId(): ?UuidInterface
     {
@@ -120,6 +126,26 @@ class Review
 
         $book->addReview($this, false);
     }
+
+    /**
+     * @return Review|null
+     */
+    public function getSelfRef(): ?Review
+    {
+        return $this->selfRef;
+    }
+
+
+    /**
+     * @param Review|null $selfRef
+     */
+    public function setSelfRef(?Review $selfRef): self
+    {
+        $this->selfRef = $selfRef;
+        return $this;
+    }
+
+
 
     public function getBook(): ?Book
     {
